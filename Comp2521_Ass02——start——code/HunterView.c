@@ -22,9 +22,20 @@
 // add your own #includes here
 
 // TODO: ADD YOUR OWN STRUCTS HERE
+struct Player {
+    int Score;
+    int Health;
+    int Location;
+    char *name; 
+      
+};
 
 struct hunterView {
 	// TODO: ADD FIELDS HERE
+	Player Hunter;
+	int Round;
+	PlaceId *shortestPath;
+	GameView view;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -32,14 +43,13 @@ struct hunterView {
 
 HunterView HvNew(char *pastPlays, Message messages[])
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	HunterView new = malloc(sizeof(*new));
-	if (new == NULL) {
-		fprintf(stderr, "Couldn't allocate HunterView!\n");
-		exit(EXIT_FAILURE);
-	}
-
-	return new;
+	// TODO
+	
+	HunterView newView = malloc(sizeof(HunterView));
+	assert(newView != NULL);
+	newView->view = GvNew(pastPlays, messages);
+	return newView;
+	
 }
 
 void HvFree(HunterView hv)
