@@ -43,7 +43,7 @@ struct hunterView {
 
 HunterView HvNew(char *pastPlays, Message messages[])
 {
-	// TODO
+	// TODO:
 	
 	HunterView newView = malloc(sizeof(HunterView));
 	assert(newView != NULL);
@@ -55,6 +55,7 @@ HunterView HvNew(char *pastPlays, Message messages[])
 void HvFree(HunterView hv)
 {
 	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
+	GvFree(hv->view);
 	free(hv);
 }
 
