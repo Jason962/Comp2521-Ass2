@@ -22,7 +22,7 @@
 // add your own #includes here
 
 // TODO: ADD YOUR OWN STRUCTS HERE
-struct Player {
+struct Hunter {
     int Score;
     int Health;
     int Location;
@@ -32,7 +32,7 @@ struct Player {
 
 struct hunterView {
 	// TODO: ADD FIELDS HERE
-	Player Hunter;
+	Hunter HunterInfo;
 	int Round;
 	PlaceId *shortestPath;
 	GameView view;
@@ -44,7 +44,7 @@ struct hunterView {
 HunterView HvNew(char *pastPlays, Message messages[])
 {
 	// TODO:
-	
+	// Create a New View using GV ADT:
 	HunterView newView = malloc(sizeof(HunterView));
 	assert(newView != NULL);
 	newView->view = GvNew(pastPlays, messages);
@@ -54,7 +54,8 @@ HunterView HvNew(char *pastPlays, Message messages[])
 
 void HvFree(HunterView hv)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
+	// TODO: 
+	// Free the View:
 	GvFree(hv->view);
 	free(hv);
 }
@@ -64,38 +65,48 @@ void HvFree(HunterView hv)
 
 Round HvGetRound(HunterView hv)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	return 0;
+	// TODO: 
+	// Get the current round:
+	int CurrentRound = GvGetRound(hv->view);
+	hv->Round = CurrentRound;
+	return CurrentRound;
 }
 
 Player HvGetPlayer(HunterView hv)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	return PLAYER_LORD_GODALMING;
+	// TODO: 
+	// Determine whose turn it is:
+	int PlayerNumber = GvGetPlayer(hv->view);	
+	return PlayerNumber;
 }
 
 int HvGetScore(HunterView hv)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	return 0;
+	// TODO: 
+	// To determine to score of the active player:
+	int PlayerScore = GvGetScore(hv->view);
+	return PlayerScore;
 }
 
 int HvGetHealth(HunterView hv, Player player)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	return 0;
+	// TODO: 
+	int PlayerHealth = GvGetHealth(hv->view, player);
+	return PlayerHealth;
 }
 
 PlaceId HvGetPlayerLocation(HunterView hv, Player player)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	return NOWHERE;
+	// TODO: 
+	int LocationOfPlayer = GvGetPlayerLocation(hv->view, player);
+	return LocationOfPlayer;
 }
 
 PlaceId HvGetVampireLocation(HunterView hv)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	return NOWHERE;
+	// TODO: 
+	int LocationOfVampire = GvGetVampireLocation(hv->view);
+	return LocationOfVampire;
 }
 
 ////////////////////////////////////////////////////////////////////////
