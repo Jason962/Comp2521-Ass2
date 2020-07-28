@@ -91,6 +91,7 @@ int HvGetScore(HunterView hv)
 int HvGetHealth(HunterView hv, Player player)
 {
 	// TODO: 
+	// Show the players HP:
 	int PlayerHealth = GvGetHealth(hv->view, player);
 	return PlayerHealth;
 }
@@ -98,6 +99,7 @@ int HvGetHealth(HunterView hv, Player player)
 PlaceId HvGetPlayerLocation(HunterView hv, Player player)
 {
 	// TODO: 
+	// Shows location of the Player:
 	int LocationOfPlayer = GvGetPlayerLocation(hv->view, player);
 	return LocationOfPlayer;
 }
@@ -105,6 +107,7 @@ PlaceId HvGetPlayerLocation(HunterView hv, Player player)
 PlaceId HvGetVampireLocation(HunterView hv)
 {
 	// TODO: 
+	// Show the location of the immature vampire:
 	int LocationOfVampire = GvGetVampireLocation(hv->view);
 	return LocationOfVampire;
 }
@@ -114,7 +117,9 @@ PlaceId HvGetVampireLocation(HunterView hv)
 
 PlaceId HvGetLastKnownDraculaLocation(HunterView hv, Round *round)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
+	// TODO: 
+	// Gets Dracula's last known location and 
+	// how many rounds ago it was (*round): 
 	*round = 0;
 	return NOWHERE;
 }
