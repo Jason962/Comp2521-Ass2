@@ -120,32 +120,35 @@ PlaceId HvGetLastKnownDraculaLocation(HunterView hv, Round *round)
 	// TODO: 
 	// Gets Dracula's last known location and 
 	// how many rounds ago it was (*round):    
-	int ArraySize = 20; 
-	bool *Free;
-	int *VisitedNumber;
+	bool *Free = false;
+	int *VisitedNumber = 0;
+	// Get the Location History of Dracula via GameView:
 	PlaceId *LocationDracula = GvGetLocationHistory(hv->view, PLAYER_DRACULA, 
 	                                         VisitedNumber , Free);
-	int i = ArraySize - 1;                    
-	while (i > 0) {
+	// The function returns an array of PlaceId's of Dracula's visited locations
+	int i = *VisitedNumber - 1;                    
+	while (i > 0 && Free) {
+	    // Scan the array backwards to see if any locations are real.
 	    if (placeIsReal(LocationDracula[i])) {
-	        *round = ArraySize - 1 - i;
+	        // If there is a known location, return it:
+	        *round = *VisitedNumber - 1 - i;
 	        return LocationDracula[i];
-	        break;
 	        
 	    }
 	    i--;
-	    if (i == 0) {
-	        return NOWHERE;
-	    }
 	}
-
+	// If there was not a known location for Dracula.
+    return NOWHERE;
 }
 
 PlaceId *HvGetShortestPathTo(HunterView hv, Player hunter, PlaceId dest,
                              int *pathLength)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	*pathLength = 0;
+	// TODO: 
+	// To find the shortest path to the given destination, use Dijsktra's:
+	int arrayDist[];
+	int arrayPred[];
+	
 	return NULL;
 }
 
