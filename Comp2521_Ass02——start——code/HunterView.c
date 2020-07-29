@@ -22,13 +22,13 @@
 // add your own #includes here
 
 // TODO: ADD YOUR OWN STRUCTS HERE
-struct Hunter {
+typedef struct Hunter {
     int Score;
     int Health;
     int Location;
     char *name; 
       
-};
+} Hunter;
 
 struct hunterView {
 	// TODO: ADD FIELDS HERE
@@ -76,7 +76,7 @@ Player HvGetPlayer(HunterView hv)
 {
 	// TODO: 
 	// Determine whose turn it is:
-	int PlayerNumber = GvGetPlayer(hv->view);	
+	Player PlayerNumber = GvGetPlayer(hv->view);	
 	return PlayerNumber;
 }
 
@@ -100,7 +100,7 @@ PlaceId HvGetPlayerLocation(HunterView hv, Player player)
 {
 	// TODO: 
 	// Shows location of the Player:
-	int LocationOfPlayer = GvGetPlayerLocation(hv->view, player);
+	PlaceId LocationOfPlayer = GvGetPlayerLocation(hv->view, player);
 	return LocationOfPlayer;
 }
 
@@ -108,7 +108,7 @@ PlaceId HvGetVampireLocation(HunterView hv)
 {
 	// TODO: 
 	// Show the location of the immature vampire:
-	int LocationOfVampire = GvGetVampireLocation(hv->view);
+	PlaceId LocationOfVampire = GvGetVampireLocation(hv->view);
 	return LocationOfVampire;
 }
 
@@ -119,9 +119,26 @@ PlaceId HvGetLastKnownDraculaLocation(HunterView hv, Round *round)
 {
 	// TODO: 
 	// Gets Dracula's last known location and 
-	// how many rounds ago it was (*round): 
-	*round = 0;
-	return NOWHERE;
+	// how many rounds ago it was (*round):    
+	int ArraySize = 20; 
+	bool *Free;
+	int *VisitedNumber;
+	PlaceId *LocationDracula = GvGetLocationHistory(hv->view, PLAYER_DRACULA, 
+	                                         VisitedNumber , Free);
+	int i = ArraySize - 1;                    
+	while (i > 0) {
+	    if (placeIsReal(LocationDracula[i])) {
+	        *round = ArraySize - 1 - i;
+	        return LocationDracula[i];
+	        break;
+	        
+	    }
+	    i--;
+	    if (i == 0) {
+	        return NOWHERE;
+	    }
+	}
+
 }
 
 PlaceId *HvGetShortestPathTo(HunterView hv, Player hunter, PlaceId dest,
