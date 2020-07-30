@@ -146,8 +146,6 @@ PlaceId *HvGetShortestPathTo(HunterView hv, Player hunter, PlaceId dest,
 {
 	// TODO: 
 	// To find the shortest path to the given destination, use Dijsktra's:
-	int arrayDist[];
-	int arrayPred[];
 	
 	return NULL;
 }
@@ -157,25 +155,84 @@ PlaceId *HvGetShortestPathTo(HunterView hv, Player hunter, PlaceId dest,
 
 PlaceId *HvWhereCanIGo(HunterView hv, int *numReturnedLocs)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	*numReturnedLocs = 0;
-	return NULL;
+	// TODO: 
+	// Show possible routes for Hunters to travel to:
+    Player PlayersTurn = HvGetPlayer(hv);
+	PlaceId HuntersLocation = HvGetPlayerLocation(hv, PlayersTurn);
+	// If the hunter has not made a move yet:
+	if (HuntersLocation == NOWHERE) {
+	    *numReturnedLocs = 0;
+	    return NULL;
+	}
+	// If it is the Hunters turn to move:
+	int RoundNumber = hv->Round;
+	int *NumberOfLocations = 0;
+	
+	PlaceId *WhereHuntersCanGo = GvGetReachable(hv->view, PlayersTurn, 
+	                    RoundNumber, HuntersLocation, NumberOfLocations);
+	
+	*numReturnedLocs = *NumberOfLocations;
+	
+	return WhereHuntersCanGo;
 }
 
 PlaceId *HvWhereCanIGoByType(HunterView hv, bool road, bool rail,
                              bool boat, int *numReturnedLocs)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	*numReturnedLocs = 0;
-	return NULL;
+	// TODO: 
+	// Show possible routes that Hunters can travel to based on transport:
+	Player PlayersTurn = HvGetPlayer(hv);
+	PlaceId HuntersLocation = HvGetPlayerLocation(hv, PlayersTurn);
+	// If the hunter has not made a move yet:
+	if (HuntersLocation == NOWHERE) {
+	    *numReturnedLocs = 0;
+	    return NULL;
+	}
+	// If it is the Hunters turn to move:
+	int RoundNumber = hv->Round;
+	int *NumberOfLocations = 0;
+	bool Road = road;
+	bool Rail = rail;
+	bool Boat = boat;
+	
+	PlaceId *WhereHuntersCanGo = GvGetReachableByType(hv->view, PlayersTurn, 
+	                                RoundNumber, HuntersLocation, Road, Rail, 
+	                                Boat, NumberOfLocations);
+	
+	*numReturnedLocs = *NumberOfLocations;	
+	
+	return WhereHuntersCanGo;
 }
 
 PlaceId *HvWhereCanTheyGo(HunterView hv, Player player,
                           int *numReturnedLocs)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	*numReturnedLocs = 0;
-	return NULL;
+	// TODO: 
+	// Show possible routes for Hunters to travel to in their next turn:
+    Player PlayersTurn = HvGetPlayer(hv);
+	PlaceId HuntersLocation = HvGetPlayerLocation(hv, PlayersTurn);
+	// If the hunter has not made a move yet:
+	if (HuntersLocation == NOWHERE) {
+	    *numReturnedLocs = 0;
+	    return NULL;
+	}
+	// If Dracula's location has not been revealed yet:
+	PlaceId DraculaLoc = HvGetLastKnownDraculaLocation(hv, hv->Round);
+	if (DraculaLoc == NOWHERE) {
+	    *numReturnedLocs = 0;
+	    return NULL;
+	}
+	// To find possible travel locations for the player in the next turn:
+	// Next turn implies Round + 1;
+	int RoundNumber = hv->Round + 1;
+	int *NumberOfLocations = 0;
+	
+	PlaceId *WhereHuntersCanGoNextTurn = GvGetReachable(hv->view, PlayersTurn, 
+	                    RoundNumber, HuntersLocation, NumberOfLocations);
+	
+	*numReturnedLocs = *NumberOfLocations;
+	
+	return WhereHuntersCanGoNextTurn;
 }
 
 PlaceId *HvWhereCanTheyGoByType(HunterView hv, Player player,
