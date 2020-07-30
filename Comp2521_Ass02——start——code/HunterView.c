@@ -158,9 +158,9 @@ PlaceId *HvWhereCanIGo(HunterView hv, int *numReturnedLocs)
 	// TODO: 
 	// Show possible routes for Hunters to travel to:
     Player PlayersTurn = HvGetPlayer(hv);
-	PlaceId HuntersLocation = HvGetPlayerLocation(hv, PlayersTurn);
+	PlaceId PlayerLocation = HvGetPlayerLocation(hv, PlayersTurn);
 	// If the hunter has not made a move yet:
-	if (HuntersLocation == NOWHERE) {
+	if (PlayerLocation == NOWHERE) {
 	    *numReturnedLocs = 0;
 	    return NULL;
 	}
@@ -169,7 +169,7 @@ PlaceId *HvWhereCanIGo(HunterView hv, int *numReturnedLocs)
 	int *NumberOfLocations = 0;
 	
 	PlaceId *WhereHuntersCanGo = GvGetReachable(hv->view, PlayersTurn, 
-	                    RoundNumber, HuntersLocation, NumberOfLocations);
+	                    RoundNumber, PlayerLocation, NumberOfLocations);
 	
 	*numReturnedLocs = *NumberOfLocations;
 	
@@ -182,13 +182,13 @@ PlaceId *HvWhereCanIGoByType(HunterView hv, bool road, bool rail,
 	// TODO: 
 	// Show possible routes that Hunters can travel to based on transport:
 	Player PlayersTurn = HvGetPlayer(hv);
-	PlaceId HuntersLocation = HvGetPlayerLocation(hv, PlayersTurn);
+	PlaceId PlayerLocation = HvGetPlayerLocation(hv, PlayersTurn);
 	// If the hunter has not made a move yet:
-	if (HuntersLocation == NOWHERE) {
+	if (PlayerLocation == NOWHERE) {
 	    *numReturnedLocs = 0;
 	    return NULL;
 	}
-	// If it is the Hunters turn to move:
+	// If it is the Hunters turn to move (restricted by transport type):
 	int RoundNumber = hv->Round;
 	int *NumberOfLocations = 0;
 	bool Road = road;
@@ -196,7 +196,7 @@ PlaceId *HvWhereCanIGoByType(HunterView hv, bool road, bool rail,
 	bool Boat = boat;
 	
 	PlaceId *WhereHuntersCanGo = GvGetReachableByType(hv->view, PlayersTurn, 
-	                                RoundNumber, HuntersLocation, Road, Rail, 
+	                                RoundNumber, PlayerLocation, Road, Rail, 
 	                                Boat, NumberOfLocations);
 	
 	*numReturnedLocs = *NumberOfLocations;	
@@ -210,14 +210,14 @@ PlaceId *HvWhereCanTheyGo(HunterView hv, Player player,
 	// TODO: 
 	// Show possible routes for Hunters to travel to in their next turn:
     Player PlayersTurn = HvGetPlayer(hv);
-	PlaceId HuntersLocation = HvGetPlayerLocation(hv, PlayersTurn);
+	PlaceId LocationOfPlayer = HvGetPlayerLocation(hv, PlayersTurn);
 	// If the hunter has not made a move yet:
-	if (HuntersLocation == NOWHERE) {
+	if (LocationOfPlayer == NOWHERE) {
 	    *numReturnedLocs = 0;
 	    return NULL;
 	}
 	// If Dracula's location has not been revealed yet:
-	PlaceId DraculaLoc = HvGetLastKnownDraculaLocation(hv, hv->Round);
+	PlaceId DraculaLoc = HvGetLastKnownDraculaLocation(hv, &(hv->Round));
 	if (DraculaLoc == NOWHERE) {
 	    *numReturnedLocs = 0;
 	    return NULL;
@@ -228,7 +228,7 @@ PlaceId *HvWhereCanTheyGo(HunterView hv, Player player,
 	int *NumberOfLocations = 0;
 	
 	PlaceId *WhereHuntersCanGoNextTurn = GvGetReachable(hv->view, PlayersTurn, 
-	                    RoundNumber, HuntersLocation, NumberOfLocations);
+	                    RoundNumber, LocationOfPlayer, NumberOfLocations);
 	
 	*numReturnedLocs = *NumberOfLocations;
 	
@@ -239,9 +239,40 @@ PlaceId *HvWhereCanTheyGoByType(HunterView hv, Player player,
                                 bool road, bool rail, bool boat,
                                 int *numReturnedLocs)
 {
-	// TODO: REPLACE THIS WITH YOUR OWN IMPLEMENTATION
-	*numReturnedLocs = 0;
-	return NULL;
+	// TODO: 
+	// Show possible routes for Hunters to travel to in 
+	// their next turn, restricted by transport type:
+    Player PlayersTurn = HvGetPlayer(hv);
+	PlaceId LocationOfPlayer = HvGetPlayerLocation(hv, PlayersTurn);
+	// If the hunter has not made a move yet:
+	if (LocationOfPlayer == NOWHERE) {
+	    *numReturnedLocs = 0;
+	    return NULL;
+	}
+	// If Dracula's location has not been revealed yet:
+	PlaceId DraculaLocation = HvGetLastKnownDraculaLocation(hv, &(hv->Round));
+	if (DraculaLocation == NOWHERE) {
+	    *numReturnedLocs = 0;
+	    return NULL;
+	}
+	// To find possible travel locations for the player in the 
+	// next turn (restricted by transport type):
+	
+	// Next turn implies Round + 1;
+	int Roundnumber = hv->Round + 1;
+	int *NumberOfLocationsAround = 0;
+	
+	bool Road = road;
+	bool Rail = rail;
+	bool Boat = boat;
+	// The 'R' at the end means restricted:
+	PlaceId *WhereHuntersCanGoNextTurnR = GvGetReachableByType(hv->view, 
+	                                 PlayersTurn, Roundnumber, LocationOfPlayer, 
+	                                 Road, Rail, Boat, NumberOfLocationsAround);
+	
+	*numReturnedLocs = *NumberOfLocationsAround;
+	
+	return WhereHuntersCanGoNextTurnR;
 }
 
 ////////////////////////////////////////////////////////////////////////
