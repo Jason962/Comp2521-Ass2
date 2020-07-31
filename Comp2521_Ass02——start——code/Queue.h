@@ -24,5 +24,8 @@ Play leaveQueue(Queue q);
 int numItems(Queue q);
 
 // Returns a copy of the item at a particular location.
-// Zero indexed, from the fromt.
+// Zero indexed, from the from.
 Play getElementAt(Queue q, int location);
+
+// Checks if there are no items in the Queue.
+int QueueIsEmpty (Queue q);		
