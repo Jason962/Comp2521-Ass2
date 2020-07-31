@@ -94,3 +94,8 @@ static void destroyNode(QNode n)
    free(n->current);
    free(n);
 }
+
+int QueueIsEmpty (Queue q)
+{
+	return (q->start == NULL);
+}
